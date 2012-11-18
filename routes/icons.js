@@ -1,5 +1,7 @@
 var mongo = require('mongodb');
-
+var express = require('express'),
+    path = require('path'),
+    fs = require('fs');
 var Server = mongo.Server,
     Db = mongo.Db,
     BSON = mongo.BSONPure;
@@ -18,6 +20,11 @@ db.open(function(err, db) {
         });
     }
 });
+
+var upfile = function (files)
+{
+    fs.rename(files.picture.path , path.join(__dirname, '../public/pics/') + files.picture.filename);
+}
 
 exports.findById = function(req, res) {
     var id = req.params.id;
@@ -39,9 +46,10 @@ exports.findAll = function(req, res) {
 
 exports.addIcon = function(req, res) {
     var icon = req.body;
+    
     console.log('Adding icon: ' + JSON.stringify(icon));
     db.collection('icons', function(err, collection) {
-        collection.insert(icon, {safe:true}, function(err, result) {
+        collection.insert(icon, {safe:true}, function(err, result, files) {
             if (err) {
                 res.send({'error':'An error has occurred'});
             } else {
@@ -55,11 +63,13 @@ exports.addIcon = function(req, res) {
 exports.updateIcon = function(req, res) {
     var id = req.params.id;
     var icon = req.body;
+    upfile(req.files);
+    icon.picture = req.files.picture.filename;
     delete icon._id;
     console.log('Updating icon: ' + id);
     console.log(JSON.stringify(icon));
     db.collection('icons', function(err, collection) {
-        collection.update({'_id':new BSON.ObjectID(id)}, icon, {safe:true}, function(err, result) {
+        collection.update({'_id':new BSON.ObjectID(id)}, icon, {safe:true}, function(err, result, files) {
             if (err) {
                 console.log('Error updating icon: ' + err);
                 res.send({'error':'An error has occurred'});

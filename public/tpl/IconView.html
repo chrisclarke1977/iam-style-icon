@@ -1,6 +1,6 @@
 <div class="row-fluid">
 
-    <form class="form-horizontal span12">
+    <form enctype="multipart/form-data" name="snapper" class="form-horizontal span12">
 
         <fieldset>
 
@@ -66,9 +66,10 @@
 
                 <div class="span4">
                     <div class="well" style="width: 180px;text-align: center;width:50%;margin: 0px auto;">
-                        <p><img id="picture" width="180" src="<%= picture === null ? 'pics/generic.jpg' : 'pics/' + picture %>"/></p>
-                        <p style="color:#999;">To change the picture, drag a new picture from your file system onto the box above.</p>
-                    </div>
+                        <p><img id="pic" width="180" src="<%= picture === null ? 'pics/generic.jpg' : 'pics/' + picture %>"/></p>
+                        <p style="color:#999;">Use this to change the picture.</p>
+                        <input onchange="document.forms.snapper.submit()" type="file" id="pic" name="picture" accept="image/*"></input> \
+		    </div>
                 </div>
 
             </div>
@@ -87,7 +88,7 @@
 <div class="row-fluid status-bar">
     <div class="span12">
         <div class="alert alert-success" style="display: none">
-            <b>Success!</b> Wine saved successfully
+            <b>Success!</b> Icon saved successfully
         </div>
     </div>
 </div>
