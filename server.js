@@ -1,7 +1,7 @@
 var express = require('express'),
     path = require('path'),
     http = require('http'),
-    icon = require('./routes/icons');
+    icon = require('./routes/icons'),
     user = require('./routes/user'),
     pics = require('./routes/pics');
 
